@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>TEBAK</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        overflow-x: hidden;
+        background: #fff;
+      }
+
+      /* ========================= */
+      /* COUNTDOWN */
+      /* ========================= */
+
+      #countdownPage {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+
+        background: linear-gradient(135deg, #ff7eb3, #ff758c, #ff5e62);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+        color: white;
+        z-index: 99999;
+        padding: 20px;
+      }
+
+      #countdownPage h1 {
+        font-family: "Great Vibes", cursive;
+        font-size: 5rem;
+        margin-bottom: 20px;
+      }
+
+      #countdownPage p {
+        font-size: 1.2rem;
+        margin-bottom: 25px;
+      }
+
+      #countdown {
+        font-size: 2.8rem;
+        font-weight: 600;
+        line-height: 1.6;
+      }
+
+      /* ========================= */
+      /* MAIN */
+      /* ========================= */
+
+      #mainContent {
+        display: none;
+      }
+
+      .hero {
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+      }
+
+      .overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.45);
+      }
+
+      .hero-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: white;
+        width: 90%;
+      }
+
+      .hero-content h1 {
+        font-family: "Great Vibes", cursive;
+        font-size: 6rem;
+        margin-bottom: 15px;
+      }
+
+      .hero-content h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+      }
+
+      .hero-content p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: auto;
+      }
+
+      /* ========================= */
+
+      .section {
+        padding: 100px 10%;
+      }
+
+      .title {
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        color: #ff4d8d;
+      }
+
+      /* ========================= */
+
+      .letter {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+
+        padding: 40px;
+
+        border-radius: 25px;
+
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+        line-height: 2;
+        font-size: 1.1rem;
+      }
+
+      .signature {
+        margin-top: 30px;
+        font-family: "Great Vibes", cursive;
+        font-size: 2.5rem;
+        color: #ff4d8d;
+        text-align: right;
+      }
+
+      /* ========================= */
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+        gap: 25px;
+      }
+
+      .gallery img {
+        width: 100%;
+        height: 350px;
+
+        object-fit: cover;
+
+        border-radius: 20px;
+
+        transition: 0.4s;
+
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .gallery img:hover {
+        transform: scale(1.05) rotate(2deg);
+      }
+
+      /* ========================= */
+
+      .footer {
+        padding: 120px 20px;
+
+        background: linear-gradient(135deg, #ff7eb3, #ff4d8d);
+
+        text-align: center;
+        color: white;
+      }
+
+      .footer h2 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        font-family: "Great Vibes", cursive;
+      }
+
+      /* ========================= */
+      /* HEARTS */
+      /* ========================= */
+
+      .heart {
+        position: fixed;
+        top: -20px;
+        pointer-events: none;
+        z-index: 999;
+        animation: fall linear forwards;
+      }
+
+      @keyframes fall {
+        from {
+          transform: translateY(-10vh) rotate(0deg);
+          opacity: 1;
+        }
+
+        to {
+          transform: translateY(110vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero-content h1 {
+          font-size: 4rem;
+        }
+
+        .hero-content h2 {
+          font-size: 1.5rem;
+        }
+
+        #countdownPage h1 {
+          font-size: 3rem;
+        }
+
+        #countdown {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- COUNTDOWN -->
+
+    <div id="countdownPage">
+      <h2>HITUNG MUNDUR</h2>
+
+      <div id="countdown"></div>
+    </div>
+
+    <!-- WEBSITE -->
+
+    <div id="mainContent">
+      <section class="hero">
+        <img src="images/hero.webp" />
+
+        <div class="overlay"></div>
+
+        <div class="hero-content">
+          <h1>Selamat Ulang Tahun</h1>
+
+          <h2>❤️ Istriku Tercinta cilla ❤️</h2>
+
+          <p>
+            Hari ini adalah hari yang sangat spesial, karena dunia pernah
+            menghadiahkanku seseorang yang luar biasa sepertimu.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="title">💌 Surat Untukmu</h2>
+
+        <div class="letter">
+          <p>Selamat ulang tahun sayangku...</p>
+
+          <br />
+
+          <p>
+            Terima kasih telah menjadi rumah yang selalu membuatku merasa
+            tenang.
+          </p>
+
+          <p>
+            Terima kasih telah menemani setiap langkah, setiap perjuangan,
+            setiap tawa, dan bahkan setiap kesulitan yang pernah kita hadapi
+            bersama.
+          </p>
+
+          <p>
+            Aku mungkin tidak selalu sempurna, tetapi satu hal yang pasti, aku
+            akan selalu berusaha menjadi suami terbaik untukmu.
+          </p>
+
+          <p>
+            Semoga Allah selalu menjaga langkahmu, melimpahkan kesehatan,
+            kebahagiaan, dan mengabulkan semua doa-doamu.
+          </p>
+
+          <p>Aku mencintaimu hari ini, besok, dan selamanya.</p>
+
+          <div class="signature">Suamimu ❤️</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="title">📸 Kenangan Kita</h2>
+
+        <div class="gallery">
+          <img src="images/6.webp" />
+          <img src="images/5.webp" />
+          <img src="images/3.webp" />
+          <img src="images/1.webp" />
+          <img src="images/2.webp" />
+          <img src="images/4.webp" />
+        </div>
+      </section>
+
+      <section class="footer">
+        <h2>I Love You Forever ❤️</h2>
+
+        <p>Terima kasih telah menjadi bagian terindah dalam hidupku.</p>
+
+        <br />
+
+        <p>Happy Birthday My Love ❤️</p>
+      </section>
+    </div>
+
+    <audio id="bgMusic" loop>
+      <source src="music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script>
+      /* ================================= */
+      /* TARGET 27 JUNI 2026 00:00 WIB */
+      /* ================================= */
+
+      const targetDate = new Date("2026-06-26T17:24:00+07:00");
+
+      const countdown = document.getElementById("countdown");
+
+      const countdownPage = document.getElementById("countdownPage");
+
+      const mainContent = document.getElementById("mainContent");
+      const audio = document.getElementById("bgMusic");
+
+      function updateCountdown() {
+        const now = new Date();
+
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          countdownPage.style.display = "none";
+          mainContent.style.display = "block";
+
+          audio.play().catch((err) => {
+            console.log("Autoplay diblokir", err);
+          });
+          startHearts();
+
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        countdown.innerHTML = `
+${days} Hari<br>
+${hours} Jam<br>
+${minutes} Menit<br>
+${seconds} Detik
+`;
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      /* ================================= */
+      /* HEART EFFECT */
+      /* ================================= */
+
+      function createHeart() {
+        const heart = document.createElement("div");
+
+        heart.classList.add("heart");
+
+        heart.innerHTML = "❤️";
+
+        heart.style.left = Math.random() * 100 + "vw";
+
+        heart.style.fontSize = 15 + Math.random() * 25 + "px";
+
+        heart.style.animationDuration = 5 + Math.random() * 5 + "s";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 10000);
+      }
+
+      function startHearts() {
+        setInterval(() => {
+          createHeart();
+        }, 250);
+      }
+    </script>
+  </body>
+</html>
