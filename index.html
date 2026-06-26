@@ -342,31 +342,41 @@
 
     <script>
       /* ================================= */
-      /* TARGET 27 JUNI 2026 00:00 WIB */
+      /* TARGET TANGGAL */
+      /* 27 Juni 2026 00:00:00 WIB */
       /* ================================= */
 
-      const targetDate = new Date("2026-06-26T17:24:00+07:00");
+      const targetDate = new Date(2026, 5, 26, 18, 0, 0);
 
       const countdown = document.getElementById("countdown");
-
       const countdownPage = document.getElementById("countdownPage");
-
       const mainContent = document.getElementById("mainContent");
       const audio = document.getElementById("bgMusic");
 
+      countdownPage.style.display = "flex";
+      mainContent.style.display = "none";
+
+      /* ================================= */
+      /* COUNTDOWN */
+      /* ================================= */
+
       function updateCountdown() {
         const now = new Date();
-
-        const diff = targetDate - now;
+        const diff = targetDate.getTime() - now.getTime();
 
         if (diff <= 0) {
+          clearInterval(timer);
+
           countdownPage.style.display = "none";
           mainContent.style.display = "block";
 
-          audio.play().catch((err) => {
-            console.log("Autoplay diblokir", err);
-          });
           startHearts();
+
+          if (audio) {
+            audio.play().catch((err) => {
+              console.log("Autoplay diblokir:", err);
+            });
+          }
 
           return;
         }
@@ -382,24 +392,27 @@
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         countdown.innerHTML = `
-${days} Hari<br>
-${hours} Jam<br>
-${minutes} Menit<br>
-${seconds} Detik
-`;
+        <div>${days} Hari</div>
+        <div>${hours} Jam</div>
+        <div>${minutes} Menit</div>
+        <div>${seconds} Detik</div>
+    `;
       }
 
       updateCountdown();
-      setInterval(updateCountdown, 1000);
+
+      const timer = setInterval(updateCountdown, 1000);
 
       /* ================================= */
       /* HEART EFFECT */
       /* ================================= */
 
+      let heartInterval = null;
+
       function createHeart() {
         const heart = document.createElement("div");
 
-        heart.classList.add("heart");
+        heart.className = "heart";
 
         heart.innerHTML = "❤️";
 
@@ -417,10 +430,18 @@ ${seconds} Detik
       }
 
       function startHearts() {
-        setInterval(() => {
-          createHeart();
-        }, 250);
+        if (heartInterval) return;
+
+        heartInterval = setInterval(createHeart, 250);
       }
+
+      /* ================================= */
+      /* DEBUG */
+      /* ================================= */
+
+      console.log("Countdown Loaded");
+      console.log("Target :", targetDate);
+      console.log("Now    :", new Date());
     </script>
   </body>
 </html>
